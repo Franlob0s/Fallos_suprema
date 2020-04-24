@@ -1,0 +1,47 @@
+"""
+Buscar fallos que tengan la ley 19.496 en pdf
+"""
+import utils
+import os
+import shutil
+
+STRING_TO_LOOK = "19.496"
+folderName = "downloads"
+txtFolderPath = "txts"
+lawFolderPath = "fallos_19496"
+
+# Look for folders
+dateFolders = utils.get_immediate_subdirectories(folderName)
+print(dateFolders)
+
+# Choose a folder
+choose_text = "Choose folder to transform pdf files:\n"
+
+i = 1
+for folder in dateFolders:
+    choose_text += "(" + str(i) + ") " + dateFolders[i-1] + "\n"
+    i += 1
+
+folder_index = int(input(choose_text))
+choose_folder = os.path.join(folderName, dateFolders[folder_index-1])
+
+# Extract files name
+txt_path = os.path.join(choose_folder, txtFolderPath)
+txt_files = utils.get_immediate_files(txt_path)
+print(txt_files)
+
+# Create folder to save files with ley 19.496
+law_folder = os.path.join(choose_folder, lawFolderPath)
+
+if not os.path.exists(law_folder):
+    os.mkdir(law_folder)
+    print("Directory " + law_folder + " Created ")
+else:
+    print("Directory " + law_folder + " already exists")
+
+# Find files with ley 19.496 and save on the law_folder
+for txt_file in txt_files:
+    txt_file_path = os.path.join(txt_path, txt_file)
+    if STRING_TO_LOOK in open(txt_file_path, encoding="utf8").read():
+        print(txt_file)
+        shutil.copyfile(txt_file_path, os.path.join(law_folder, txt_file))
