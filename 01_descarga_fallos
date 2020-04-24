@@ -1,0 +1,45 @@
+
+#Transforma los archivos .pdf de la carpeta a .txt
+
+
+folderName = "downloads"
+pdfFolderPath = "pdfs"
+txtFolderPath = "txts"
+
+# Look for folders
+dateFolders = utils.get_immediate_subdirectories(folderName)
+print(dateFolders)
+
+# Choose a folder
+choose_text = "Choose folder to transform pdf files:\n"
+
+i = 1
+for folder in dateFolders:
+    choose_text += "(" + str(i) + ") " + dateFolders[i-1] + "\n"
+    i += 1
+
+folder_index = int(input(choose_text))
+choose_folder = os.path.join(folderName, dateFolders[folder_index-1])
+
+# Extract files name
+pdf_path = os.path.join(choose_folder, pdfFolderPath)
+pdf_files = utils.get_immediate_files(pdf_path)
+print(pdf_files)
+
+# Create folder to save .txt
+txt_folder = os.path.join(choose_folder, txtFolderPath)
+
+if not os.path.exists(txt_folder):
+    os.mkdir(txt_folder)
+    print("Directory " + txt_folder + " Created ")
+else:
+    print("Directory " + txt_folder + " already exists")
+
+# extract text and save to .txt files
+for pdf_file in pdf_files:
+    file_name = pdf_file[:-4]
+    try:
+        pdf2txt.main(["-o", os.path.join(txt_folder, file_name + ".txt"), os.path.join(pdf_path, pdf_file)])
+    except Exception as e:
+        print(e)
+        print("Error trying to convert " + pdf_file + " file")
