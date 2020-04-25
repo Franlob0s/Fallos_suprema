@@ -1,0 +1,11 @@
+utils
+chardet==3.0.4
+pdfminer.six==20181108
+pep8==1.7.1
+pycryptodome==3.8.1
+PyPDF2==1.26.0
+selenium==3.141.0
+six==1.12.0
+sortedcontainers==2.1.0
+urllib3==1.25.2
+wget==3.2
